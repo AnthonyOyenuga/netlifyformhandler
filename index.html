@@ -73,27 +73,30 @@
 </head>
 
 <script>
-    const form = document.querySelector("form");
-    form.addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const formData = new FormData(form);
-      const jsonData = {};
-  
-      formData.forEach((value, key) => {
-        jsonData[key] = value;
-      });
-  
-      await fetch("https://script.google.com/macros/s/AKfycbx12q-ZZZRzIvm2m-xbI2BvbY9D8Egto6TvrQ7i8Uwd56xBQlRt6yfCTeLyhTHhj-O7eA/exec", {
-        method: "POST",
-        body: JSON.stringify(jsonData),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
-  
-      form.submit(); // still submits to Netlify too (optional)
+  const form = document.querySelector("form");
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const jsonData = {};
+
+    formData.forEach((value, key) => {
+      jsonData[key] = value;
     });
-  </script>
+
+    await fetch("YOUR_WEB_APP_URL", {
+      method: "POST",
+      body: JSON.stringify(jsonData),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
+    alert("Your submission was successful!");
+    form.reset();
+  });
+</script>
+
   
 
 <body>
