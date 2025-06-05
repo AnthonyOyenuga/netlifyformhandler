@@ -108,33 +108,36 @@
     document.getElementById("utm_campaign").value = params.get("utm_campaign") || '';
 
     // Submit handler
-  const form = document.querySelector("form");
-  form.addEventListener("submit", async function (e) {
-    e.preventDefault();
-    const formData = new FormData(form);
-    const jsonData = {};
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form");
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const jsonData = {};
 
-    formData.forEach((value, key) => {
-      jsonData[key] = value;
-    });
-
-    try {
-      const response = await fetch("https://script.google.com/macros/s/YOUR_NEW_DEPLOYMENT_URL/exec", {
-        method: "POST",
-        body: JSON.stringify(jsonData),
-        headers: {
-          "Content-Type": "application/json",
-        },
+      formData.forEach((value, key) => {
+        jsonData[key] = value;
       });
 
-      if (response.ok) {
-        window.location.href = "thankyou.html";
-      } else {
-        alert("Submission failed. Please try again.");
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbww-qu4NGU_vDqK6I5rRPDAnqeIKRydh64iCrVH3lexw9McyUPo3K6hSVc7EU9YhswicQ/exec', {
+          method: "POST",
+          body: JSON.stringify(jsonData),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+
+        if (response.ok) {
+          window.location.href = "thankyou.html";
+        } else {
+          alert("Submission failed. Please try again.");
+        }
+      } catch (error) {
+        alert("An error occurred.");
+        console.error(error);
       }
-    } catch (error) {
-      alert("An error occurred.");
-    }
+    });
   });
   </script>
 </body>
