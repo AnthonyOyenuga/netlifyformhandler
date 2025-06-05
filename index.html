@@ -128,16 +128,17 @@
           }
         });
 
-        if (response.ok) {
-          window.location.href = "thankyou.html";
-        } else {
-          alert("Submission failed. Please try again.");
-        }
-      } catch (error) {
-        alert("An error occurred.");
-        console.error(error);
+        const result = await response.json();
+        
+        if (response.ok && result.result === "success") {
+        window.location.href = "thankyou.html";
+      } else {
+        document.body.insertAdjacentHTML("beforeend", `<p style="color:red;">Error: ${result.message || 'Submission failed'}</p>`);
       }
-    });
+
+    } catch (error) {
+      document.body.insertAdjacentHTML("beforeend", `<p style="color:red;">Caught Error: ${error.message}</p>`);
+    }
   });
   </script>
 </body>
