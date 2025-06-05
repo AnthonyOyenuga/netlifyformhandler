@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Free Strategy Call</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+    }
+
+    .form-container {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: 24px;
+      color: #333;
+    }
+
+    p {
+      margin-bottom: 20px;
+      font-size: 16px;
+      color: #555;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="email"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: #480072;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    button:hover {
+      background: #6d0183;
+    }
+  </style>
+</head>
+
+<script>
+    const form = document.querySelector("form");
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const jsonData = {};
+  
+      formData.forEach((value, key) => {
+        jsonData[key] = value;
+      });
+  
+      await fetch("https://script.google.com/macros/s/AKfycbx12q-ZZZRzIvm2m-xbI2BvbY9D8Egto6TvrQ7i8Uwd56xBQlRt6yfCTeLyhTHhj-O7eA/exec", {
+        method: "POST",
+        body: JSON.stringify(jsonData),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+  
+      form.submit(); // still submits to Netlify too (optional)
+    });
+  </script>
+  
+
+<body>
+  <div class="form-container">
+    <h1>Claim Your Free Strategy Call</h1>
+    <p>Let’s find out why your ads aren’t converting.</p>
+
+    <form name="contact" method="POST" data-netlify="true">
+      <label>Your Name</label>
+      <input type="text" name="name" required>
+
+      <label>Your Email</label>
+      <input type="email" name="email" required>
+
+      <input type="hidden" name="utm_source" id="utm_source">
+      <input type="hidden" name="utm_medium" id="utm_medium">
+      <input type="hidden" name="utm_campaign" id="utm_campaign">
+
+      <button type="submit">Book Me Now</button>
+    </form>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    document.getElementById("utm_source").value = params.get("utm_source") || '';
+    document.getElementById("utm_medium").value = params.get("utm_medium") || '';
+    document.getElementById("utm_campaign").value = params.get("utm_campaign") || '';
+  </script>
+</body>
+</html>
