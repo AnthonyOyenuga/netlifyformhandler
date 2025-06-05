@@ -152,9 +152,9 @@
 
       try {
         await db.collection("leads").add(data);
-        statusEl.textContent = "Thank you! Your submission was successful.";
+        //statusEl.textContent = "Thank you! Your submission was successful.";
         statusEl.classList.add("success");
-        form.reset();
+        window.location.href = "thankyou.html";
       } catch (error) {
         console.error("Error writing document: ", error);
         statusEl.textContent = "Oops! Something went wrong. Please try again later.";
