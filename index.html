@@ -106,6 +106,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 
 <script>
+  import { getAnalytics, logEvent } from "firebase/analytics";
   // Your Firebase config from Step 2
   const firebaseConfig = {
     apiKey: "AIzaSyAWxDsHCpU5o5aOvur4LIqkDXLNXkc8Rzo",
@@ -119,7 +120,8 @@
   };
 
   // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+  const app = firebase.initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
   const db = firebase.firestore();
 
 // Autofill UTM parameters
