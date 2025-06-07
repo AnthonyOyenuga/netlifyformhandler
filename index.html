@@ -104,19 +104,19 @@
   <!-- Firebase SDKs -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
   import { getAnalytics, isSupported } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-analytics.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyAWxDsHCpU5o5aOvur4LIqkDXLNXkc8Rzo",
-    authDomain: "myleadform-1ce8c.firebaseapp.com",
-    projectId: "myleadform-1ce8c",
-    storageBucket: "myleadform-1ce8c.firebasestorage.app",
-    messagingSenderId: "722660657865",
-    appId: "1:722660657865:web:27cd702baef54fb3111b18",
-    measurementId: "G-SQHPMSQCML"
+  apiKey: "AIzaSyAWxDsHCpU5o5aOvur4LIqkDXLNXkc8Rzo",
+  authDomain: "myleadform-1ce8c.firebaseapp.com",
+  projectId: "myleadform-1ce8c",
+  storageBucket: "myleadform-1ce8c.firebasestorage.app",
+  messagingSenderId: "722660657865",
+  appId: "1:722660657865:web:27cd702baef54fb3111b18",
+  measurementId: "G-SQHPMSQCML"
+};
 
-  };
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
@@ -128,46 +128,43 @@
     console.warn("Analytics not supported in this browser");
   }
 
-// Autofill UTM parameters
-    const params = new URLSearchParams(window.location.search);
-    document.getElementById("utm_source").value = params.get("utm_source") || '';
-    document.getElementById("utm_medium").value = params.get("utm_medium") || '';
-    document.getElementById("utm_campaign").value = params.get("utm_campaign") || '';
+  // Autofill UTM parameters
+  const params = new URLSearchParams(window.location.search);
+  document.getElementById("utm_source").value = params.get("utm_source") || '';
+  document.getElementById("utm_medium").value = params.get("utm_medium") || '';
+  document.getElementById("utm_campaign").value = params.get("utm_campaign") || '';
 
-    // Form submission handler
-    document.getElementById("lead-form").addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const statusEl = document.getElementById("status");
-      statusEl.textContent = "";
-      statusEl.className = "status";
+  // Form submission handler
+  document.getElementById("lead-form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const statusEl = document.getElementById("status");
+    statusEl.textContent = "";
+    statusEl.className = "status";
 
-      const form = e.target;
-      const formData = new FormData(form);
-      const data = {};
+    const form = e.target;
+    const formData = new FormData(form);
+    const data = {};
 
-      formData.forEach((value, key) => {
-        data[key] = value.trim();
-      });
-
-      // Optional: Basic validation check
-      if (!data.name || !data.email) {
-        statusEl.textContent = "Please fill out all required fields.";
-        statusEl.classList.add("error");
-        return;
-      }
-
-      try {
-        await db.collection("leads").add(data);
-        //statusEl.textContent = "Thank you! Your submission was successful.";
-        statusEl.classList.add("success");
-        window.location.href = "thankyou.html";
-      } catch (error) {
-        console.error("Error writing document: ", error);
-        statusEl.textContent = "Oops! Something went wrong. Please try again later.";
-        statusEl.classList.add("error");
-      }
+    formData.forEach((value, key) => {
+      data[key] = value.trim();
     });
-  
+
+    if (!data.name || !data.email) {
+      statusEl.textContent = "Please fill out all required fields.";
+      statusEl.classList.add("error");
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, "leads"), data); // ✅ Modular syntax
+      statusEl.classList.add("success");
+      window.location.href = "thankyou.html";
+    } catch (error) {
+      console.error("Error writing document: ", error);
+      statusEl.textContent = "Oops! Something went wrong. Please try again later.";
+      statusEl.classList.add("error");
+    }
+  });
 </script>
 </body>
 </html>
